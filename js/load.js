@@ -51,13 +51,20 @@ async function load() {
       if (ownerof.toLowerCase() == acct[0]) {
         tokenuri = formatURL(await contract.methods.tokenURI(id).call());
         if (tokenuri.length > 0) {
-          //b = await $.getJSON(tokenuri);
-          $('#body').append(/*JSON.stringify(b)*/ tokenuri + '<br>');
-          /*img = formatURL(b.image);
-          $('#body').append(
-            `<div class="nfts"><b>${na} #${id}</b> - ${b.name}<br><i>${b.description}</i><br><img src="${img}">
-            <button>Sell</button></div>`
-          );*/
+          try {
+            b = await $.getJSON(tokenuri);
+            img =
+              typeof b.image != 'undefined'
+                ? `<img src="${formatURL(b.image)}">`
+                : `<video autoplay muted loop><source src="${formatURL(
+                    (img = b.animation_url)
+                  )}"></video>`;
+            $('#body').append(
+              `<div class="nfts"><b>${na} #${id}</b> - ${b.name}<br><i>${b.description}</i><br>${img}<button>Sell</button></div>`
+            );
+          } catch (err) {
+            console.log(err);
+          }
         }
       }
     }
