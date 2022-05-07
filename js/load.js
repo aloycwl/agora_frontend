@@ -12,17 +12,16 @@ async function load() {
     to = a.result[i].to;
     id = a.result[i].tokenID;
     na = a.result[i].tokenName;
+    _input = {
+      internalType: 'uint256',
+      name: 'a',
+      type: 'uint256',
+    };
     if (to == acct[0]) {
       contract = new web3.Contract(
         [
           {
-            inputs: [
-              {
-                internalType: 'uint256',
-                name: 'a',
-                type: 'uint256',
-              },
-            ],
+            inputs: [_input],
             name: 'ownerOf',
             outputs: [
               {
@@ -31,17 +30,10 @@ async function load() {
                 type: 'address',
               },
             ],
-            stateMutability: 'view',
             type: 'function',
           },
           {
-            inputs: [
-              {
-                internalType: 'uint256',
-                name: '',
-                type: 'uint256',
-              },
-            ],
+            inputs: [_input],
             name: 'tokenURI',
             outputs: [
               {
@@ -50,7 +42,6 @@ async function load() {
                 type: 'string',
               },
             ],
-            stateMutability: 'view',
             type: 'function',
           },
         ],
@@ -58,17 +49,28 @@ async function load() {
       );
       ownerof = await contract.methods.ownerOf(id).call();
       if (ownerof.toLowerCase() == acct[0]) {
-        tokenuri = await contract.methods.tokenURI(id).call();
-        passed = 0;
-        re =
-          /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
-        if (tokenuri.includes('ipfs://')) {
-          tokenuri.replace('ipfs://', 'https://ipfs.io/ipfs/');
-          passed = 1;
-        } else if (re.test(tokenuri)) passed = 1;
-        $('#body').append(`${na}, ${tokenuri}, passed: ${passed}<br>`);
+        tokenuri = formatURL(await contract.methods.tokenURI(id).call());
+        if (tokenuri.length > 0) {
+          b = await $.getJSON(tokenuri);
+          img = formatURL(b.image);
+          $('#body').append(
+            `<div class="nfts"><b>${na} #${id}</b> - ${b.name}<br><i>${b.description}</i><br><img src="${img}"></div>`
+          );
+          break;
+        }
       }
     }
   }
 }
 load();
+function formatURL(u) {
+  if (u.includes('ipfs://') && u.length > 9)
+    return u.replace('ipfs://', 'https://ipfs.io/ipfs/');
+  else if (
+    /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/.test(
+      u
+    )
+  )
+    return u;
+  else return '';
+}
