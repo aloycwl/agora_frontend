@@ -54,9 +54,9 @@ async function load() {
           b = await $.getJSON(tokenuri);
           img = formatURL(b.image);
           $('#body').append(
-            `<div class="nfts"><b>${na} #${id}</b> - ${b.name}<br><i>${b.description}</i><br><img src="${img}"></div>`
+            `<div class="nfts"><b>${na} #${id}</b> - ${b.name}<br><i>${b.description}</i><br><img src="${img}">
+            <button>Sell</button></div>`
           );
-          break;
         }
       }
     }
