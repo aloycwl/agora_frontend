@@ -135,13 +135,14 @@ async function sell(addr, tokenid, id) {
     ],
     addr
   );
+  price = $('#t' + id).val();
   $('#p' + id).html('Approving...');
   await contract2.methods.approve(aa, tokenid).send({
     from: acct[0],
     gas: 21e5,
   });
   $('#p' + id).html('Setting price...');
-  await contract.Sell(addr, tokenid, $('#t' + id).val()).send({
+  await contract.Sell(addr, tokenid, price).send({
     from: acct[0],
     gas: 21e5,
   });
