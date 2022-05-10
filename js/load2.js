@@ -1,3 +1,4 @@
+aa = '0x07b2de1b0d412d567ca4028ab229fd8a671f2491';
 async function load(o) {
   if (typeof ethereum != 'undefined')
     acct = await ethereum.request({ method: 'eth_requestAccounts' });
@@ -84,8 +85,9 @@ async function load(o) {
         type: 'function',
       },
     ],
-    0x07b2de1b0d412d567ca4028ab229fd8a671f2491
+    aa
   );
+  contract = contract.methods;
   await fetch(
     `https://testnets-api.opensea.io/api/v1/assets?owner=${acct[0]}&order_direction=desc&offset=${o}&limit=50`,
     { method: 'GET' }
@@ -100,14 +102,16 @@ async function load(o) {
         a[i].animation_url == null
           ? `<img src='${a[i].image_url}'>`
           : `<video autoplay muted loop><source src='${a[i].animation_url}'></video>`
-      }<button onclick='sell("${a[i].asset_contract.address}",${
-        a[i].token_id
-      })'>Sell</button></div></div>`
+      }<p id=p${a[i].id}><input id=t${
+        a[i].id
+      } placeholder='Price'><button onclick='sell("${
+        a[i].asset_contract.address
+      }",${a[i].token_id},${a[i].id})'>Sell</button><p></div></div>`
     );
   }
 }
-load(0);
-async function sell(addr, id) {
+
+async function sell(addr, tokenid, id) {
   contract2 = new web3.Contract(
     [
       {
@@ -129,7 +133,19 @@ async function sell(addr, id) {
         type: 'function',
       },
     ],
-    0x07b2de1b0d412d567ca4028ab229fd8a671f2491
+    addr
   );
-  alert(addr + ' ' + id);
+  $('#p' + id).html('Approving...');
+  await contract2.methods.approve(aa, tokenid).send({
+    from: acct[0],
+    gas: 21e5,
+  });
+  $('#p' + id).html('Setting price...');
+  await contract.Sell(addr, tokenid, $('#t' + id).val()).send({
+    from: acct[0],
+    gas: 21e5,
+  });
+  $('#p' + id).html('Listed =)');
 }
+
+load(0);
