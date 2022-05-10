@@ -1,4 +1,5 @@
-aa = '0x07b2de1b0d412d567ca4028ab229fd8a671f2491';
+var aa = '0x07b2de1b0d412d567ca4028ab229fd8a671f2491',
+  offset = 0;
 async function load(o) {
   if (typeof ethereum != 'undefined')
     acct = await ethereum.request({ method: 'eth_requestAccounts' });
@@ -149,4 +150,14 @@ async function sell(addr, tokenid, id) {
   $('#p' + id).html('Listed =)');
 }
 
-load(0);
+load(offset);
+
+$(window).scroll(function () {
+  if (
+    Math.ceil($(window).scrollTop()) ==
+    Math.ceil($(document).height() - $(window).height())
+  ) {
+    offset += 50;
+    load(offset);
+  }
+});
