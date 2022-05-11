@@ -89,12 +89,7 @@ async function load(o) {
     aa
   );
   contract = contract.methods;
-  await fetch(
-    `https://testnets-api.opensea.io/api/v1/assets?owner=${acct[0]}&order_direction=desc&offset=${o}&limit=50`,
-    { method: 'GET' }
-  )
-    .then((response) => response.json())
-    .then((response) => (a = response.assets));
+  a = await contract.methods.show(1, 0).call();
   for (i = 0; i < a.length; i++) {
     $('#body').append(
       `<div class="nfts"><b>${a[i].asset_contract.name}</b> -  ${
@@ -110,44 +105,6 @@ async function load(o) {
       }",${a[i].token_id},${a[i].id})'>Sell</button><p></div></div>`
     );
   }
-}
-
-async function sell(addr, tokenid, id) {
-  contract2 = new web3.Contract(
-    [
-      {
-        inputs: [
-          {
-            internalType: 'address',
-            name: '',
-            type: 'address',
-          },
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256',
-          },
-        ],
-        name: 'approve',
-        outputs: [],
-        stateMutability: 'nonpayable',
-        type: 'function',
-      },
-    ],
-    addr
-  );
-  price = $('#t' + id).val();
-  $('#p' + id).html('Approving...');
-  await contract2.methods.approve(aa, tokenid).send({
-    from: acct[0],
-    gas: 21e5,
-  });
-  $('#p' + id).html('Setting price...');
-  await contract.Sell(addr, tokenid, price).send({
-    from: acct[0],
-    gas: 21e5,
-  });
-  $('#p' + id).html('Listed =)');
 }
 
 load(offset);
