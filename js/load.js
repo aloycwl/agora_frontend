@@ -60,7 +60,7 @@ async function load() {
                     (img = b.animation_url)
                   )}"></video>`;
             $('#body').append(
-              `<div class="nfts"><b>${na} #${id}</b> - ${b.name}<br><i>${b.description}</i><br>${img}<button>Sell</button></div>`
+              `<div class="nfts"><b>${na} #${id}</b> - ${b.name}<br><i>${b.description}</i><br>${img}</div>`
             );
           } catch (err) {
             console.log(err);
