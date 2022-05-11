@@ -63,22 +63,25 @@ async function load(o) {
   a = await contract.Show(20, offset).call();
   for (i = 0; i < a[0].length; i++)
     if (a[0][i].length > 1) {
-      b = {
-        name: '',
-        description: '',
-        image: '',
-      };
       try {
         b = await $.getJSON(formatURL(a[0][i]));
-      } catch (err) {}
-      img =
-        typeof b.image != 'undefined'
-          ? `<img src="${formatURL(b.image)}">`
-          : `<video autoplay muted loop><source src="${formatURL(
-              (img = b.animation_url)
-            )}"></video>`;
+      } catch (e) {
+        b = {
+          name: '',
+          description: '',
+          image: '',
+        };
+      }
       $('#body').append(
-        `<div class="nfts"><b>${b.name}</b><br><i>${b.description}</i><br>${img}<br>Price: ${a[1][i]} ETH <button onclick="buy(${a[1][i]},${a[2][i]})">Buy now</button>`
+        `<div class="nfts"><b>${b.name}</b><br><i>${b.description}</i><br>${
+          typeof b.image != 'undefined'
+            ? `<img src="${formatURL(b.image)}">`
+            : `<video autoplay muted loop><source src="${formatURL(
+                (img = b.animation_url)
+              )}"></video>`
+        }<br>Price: ${a[1][i]} ETH <button onclick="buy(${a[1][i]},${
+          a[2][i]
+        })">Buy now</button>`
       );
     }
 }
@@ -86,19 +89,18 @@ async function buy(amt, id) {
   await contract.Buy(id).send({
     from: acct[0],
     value: amt * 1e18,
-    gas: 21e5,
   });
 }
 function formatURL(u) {
   if (u.includes('ipfs://') && u.length > 9)
-    return u.replace('ipfs://', 'https://ipfs.io/ipfs/');
+    u = u.replace('ipfs://', 'https://ipfs.io/ipfs/');
   else if (
     /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/.test(
       u
     )
-  )
-    return u;
-  else return '';
+  );
+  else u = '';
+  return u;
 }
 load(offset);
 $(window).scroll(function () {

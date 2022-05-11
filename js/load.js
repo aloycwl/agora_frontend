@@ -12,7 +12,7 @@ async function load() {
     to = a.result[i].to;
     id = a.result[i].tokenID;
     na = a.result[i].tokenName;
-    _input = {
+    u = {
       internalType: 'uint256',
       name: 'a',
       type: 'uint256',
@@ -21,7 +21,7 @@ async function load() {
       contract = new web3.Contract(
         [
           {
-            inputs: [_input],
+            inputs: [u],
             name: 'ownerOf',
             outputs: [
               {
@@ -33,7 +33,7 @@ async function load() {
             type: 'function',
           },
           {
-            inputs: [_input],
+            inputs: [u],
             name: 'tokenURI',
             outputs: [
               {
@@ -50,22 +50,21 @@ async function load() {
       ownerof = await contract.methods.ownerOf(id).call();
       if (ownerof.toLowerCase() == acct[0]) {
         tokenuri = formatURL(await contract.methods.tokenURI(id).call());
-        if (tokenuri.length > 0) {
+        if (tokenuri.length > 0)
           try {
             b = await $.getJSON(tokenuri);
-            img =
-              typeof b.image != 'undefined'
-                ? `<img src="${formatURL(b.image)}">`
-                : `<video autoplay muted loop><source src="${formatURL(
-                    (img = b.animation_url)
-                  )}"></video>`;
             $('#body').append(
-              `<div class="nfts"><b>${na} #${id}</b> - ${b.name}<br><i>${b.description}</i><br>${img}</div>`
+              `<div class="nfts"><b>${na} #${id}</b> - ${b.name}<br><i>${
+                b.description
+              }</i><br>${
+                typeof b.image != 'undefined'
+                  ? `<img src="${formatURL(b.image)}">`
+                  : `<video autoplay muted loop><source src="${formatURL(
+                      (img = b.animation_url)
+                    )}"></video>`
+              }</div>`
             );
-          } catch (err) {
-            console.log(err);
-          }
-        }
+          } catch (e) {}
       }
     }
   }
@@ -73,12 +72,12 @@ async function load() {
 load();
 function formatURL(u) {
   if (u.includes('ipfs://') && u.length > 9)
-    return u.replace('ipfs://', 'https://ipfs.io/ipfs/');
+    u = u.replace('ipfs://', 'https://ipfs.io/ipfs/');
   else if (
     /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/.test(
       u
     )
-  )
-    return u;
-  else return '';
+  );
+  else u = '';
+  return u;
 }
