@@ -13,75 +13,46 @@ async function load(o) {
     });
     location.reload();
   }
+  u = {
+    internalType: 'uint256',
+    name: '',
+    type: 'uint256',
+  };
+  ad = {
+    internalType: 'address',
+    name: '',
+    type: 'address',
+  };
+  ua = {
+    internalType: 'uint256[]',
+    name: '',
+    type: 'uint256[]',
+  };
+  sa = {
+    internalType: 'string[]',
+    name: '',
+    type: 'string[]',
+  };
   contract = new web3.Contract(
     [
       {
-        inputs: [
-          {
-            internalType: 'uint256',
-            name: '_id',
-            type: 'uint256',
-          },
-        ],
+        inputs: [u],
         name: 'Buy',
         outputs: [],
         stateMutability: 'payable',
         type: 'function',
       },
       {
-        inputs: [
-          {
-            internalType: 'address',
-            name: '',
-            type: 'address',
-          },
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256',
-          },
-        ],
+        inputs: [ad, u, u],
         name: 'Sell',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function',
       },
       {
-        inputs: [
-          {
-            internalType: 'uint256',
-            name: 'batch',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'offset',
-            type: 'uint256',
-          },
-        ],
+        inputs: [u, u],
         name: 'Show',
-        outputs: [
-          {
-            internalType: 'string[]',
-            name: 'tu',
-            type: 'string[]',
-          },
-          {
-            internalType: 'uint256[]',
-            name: 'price',
-            type: 'uint256[]',
-          },
-          {
-            internalType: 'uint256[]',
-            name: 'listId',
-            type: 'uint256[]',
-          },
-        ],
+        outputs: [sa, ua, ua],
         stateMutability: 'view',
         type: 'function',
       },
@@ -95,7 +66,7 @@ async function load(o) {
   )
     .then((response) => response.json())
     .then((response) => (a = response.assets));
-  for (i = 0; i < a.length; i++) {
+  for (i = 0; i < a.length; i++)
     $('#body').append(
       `<div class="nfts"><b>${a[i].asset_contract.name}</b> -  ${
         a[i].name
@@ -109,25 +80,13 @@ async function load(o) {
         a[i].asset_contract.address
       }",${a[i].token_id},${a[i].id})'>Sell</button><p></div></div>`
     );
-  }
 }
 
 async function sell(addr, tokenid, id) {
   contract2 = new web3.Contract(
     [
       {
-        inputs: [
-          {
-            internalType: 'address',
-            name: '',
-            type: 'address',
-          },
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256',
-          },
-        ],
+        inputs: [ad, u],
         name: 'approve',
         outputs: [],
         stateMutability: 'nonpayable',
