@@ -38,6 +38,17 @@ function waitTxt(a, b) {
 async function LB() {
   return (await contract2.methods.balanceOf(acct).call()) / 1e18;
 }
+function formatURL(u) {
+  if (u.includes('ipfs://') && u.length > 9)
+    u = u.replace('ipfs://', 'https://ipfs.io/ipfs/');
+  else if (
+    /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/.test(
+      u
+    )
+  );
+  else u = '';
+  return u;
+}
 async function load(a, b) {
   if (typeof CSS != 'undefined')
     $('head').append(
