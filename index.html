@@ -40,14 +40,15 @@
         );
     }
     async function sell(addr, tokenid, id) {
+      t = $('#t' + id).val();
       waitTxt(1, 'p' + id);
       a = {
         from: acct,
       };
       CA2 = addr;
       load2();
-      //await contract2.methods.approve(CA1, tokenid).send(a);
-      await contract.Sell(CA2, tokenid, parseInt($('#t' + id).val())).send(a);
+      await contract2.methods.approve(CA1, tokenid).send(a);
+      await contract.Sell(CA2, tokenid, t).send(a);
       waitTxt(0, 'p' + id);
     }
     (async () => {
