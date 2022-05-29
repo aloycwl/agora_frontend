@@ -1,12 +1,12 @@
 async function load() {
-  a = await $.getJSON(
-    'https://api-rinkeby.etherscan.io/api?module=account&action=tokennfttx&address=0x15eD406870dB283E810D5885e432d315C94DD0dd&startblock=0&endblock=999999999&sort=desc&apikey=561643C1V7AJIMWFSBUYGWE8WG3NDVHS67'
-  );
   if (typeof ethereum != 'undefined')
     acct = await ethereum.request({ method: 'eth_requestAccounts' });
   count = 0;
   web3 = new Web3(ethereum);
   web3 = web3.eth;
+  a = await $.getJSON(
+    'https://api-rinkeby.etherscan.io/api?module=account&action=tokennfttx&address=0x15eD406870dB283E810D5885e432d315C94DD0dd&startblock=0&endblock=999999999&sort=desc&apikey=561643C1V7AJIMWFSBUYGWE8WG3NDVHS67'
+  );
   for (i = 0; i < a.result.length; i++) {
     ca = a.result[i].contractAddress;
     to = a.result[i].to;
