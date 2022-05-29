@@ -18,69 +18,8 @@
     <a id="body"></a>
   </body>
   <script>
-    aa = '0x07b2de1b0d412d567ca4028ab229fd8a671f2491';
     offset = 0;
-    async function load(o) {
-      if (typeof ethereum != 'undefined')
-        acct = await ethereum.request({ method: 'eth_requestAccounts' });
-      count = 0;
-      web3 = new Web3(ethereum);
-      web3 = web3.eth;
-      if ((await web3.net.getId()) != 4) {
-        await ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0x4' }],
-        });
-        location.reload();
-      }
-      u = {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      };
-      ad = {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      };
-      ua = {
-        internalType: 'uint256[]',
-        name: '',
-        type: 'uint256[]',
-      };
-      sa = {
-        internalType: 'string[]',
-        name: '',
-        type: 'string[]',
-      };
-      contract = new web3.Contract(
-        [
-          {
-            inputs: [u],
-            name: 'Buy',
-            outputs: [],
-            stateMutability: 'payable',
-            type: 'function',
-          },
-          {
-            inputs: [ad, u, u],
-            name: 'Sell',
-            outputs: [],
-            stateMutability: 'nonpayable',
-            type: 'function',
-          },
-          {
-            inputs: [u, u],
-            name: 'Show',
-            outputs: [sa, ua, ua],
-            stateMutability: 'view',
-            type: 'function',
-          },
-        ],
-        aa
-      );
-      contract = contract.methods;
-    }
+    CHAIN = 4;
     async function display(o) {
       a = await contract.Show(20, o).call();
       for (i = 0; i < a[0].length; i++)
@@ -109,23 +48,30 @@
     }
     async function buy(amt, id) {
       await contract.Buy(id).send({
-        from: acct[0],
+        from: acct,
         value: amt * 1e18,
       });
     }
-    function formatURL(u) {
-      if (u.includes('ipfs://') && u.length > 9)
-        u = u.replace('ipfs://', 'https://ipfs.io/ipfs/');
-      else if (
-        /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/.test(
-          u
-        )
-      );
-      else u = '';
-      return u;
-    }
     (async () => {
-      await load();
+      await load(
+        [
+          {
+            inputs: [u1],
+            name: 'Buy',
+            outputs: [],
+            stateMutability: 'payable',
+            type: 'function',
+          },
+          {
+            inputs: [u1, u1],
+            name: 'Show',
+            outputs: [u6, u2, u2],
+            stateMutability: 'view',
+            type: 'function',
+          },
+        ],
+        '0x07b2de1b0d412d567ca4028ab229fd8a671f2491'
+      );
       display(offset);
     })();
     $(window).scroll(function () {
@@ -134,7 +80,7 @@
         Math.ceil($(document).height() - $(window).height())
       ) {
         offset += 20;
-        load(offset);
+        display(offset);
       }
     });
   </script>
