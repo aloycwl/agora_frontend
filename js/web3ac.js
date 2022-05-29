@@ -49,15 +49,6 @@ function formatURL(u) {
   else u = '';
   return u;
 }
-function scroll(o) {
-  if (
-    Math.ceil($(window).scrollTop()) ==
-    Math.ceil($(document).height() - $(window).height())
-  ) {
-    offset += o;
-    display(offset);
-  }
-}
 async function load(a, b) {
   if (typeof CSS != 'undefined')
     $('head').append(

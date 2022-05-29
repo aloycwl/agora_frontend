@@ -17,8 +17,10 @@
     offset = 0;
     CHAIN = 4;
     CSS = 'https://aloycwl.github.io/agora_frontend/css/agora.css';
+    WB =
+      'https://eth-rinkeby.alchemyapi.io/v2/xneL9EV87zUlVocEVcyDT5tqp4LZE0Fy';
     async function display(o) {
-      a = await contract.Show(20, o).call();
+      a = await contracta.Show(20, o).call();
       for (i = 0; i < a[0].length; i++)
         if (a[0][i].length > 1) {
           try {

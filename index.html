@@ -66,6 +66,14 @@
       );
       display(offset);
     })();
-    $(window).scroll(scroll(50));
+    $(window).scroll(function () {
+      if (
+        Math.ceil($(window).scrollTop()) ==
+        Math.ceil($(document).height() - $(window).height())
+      ) {
+        offset += 50;
+        display(offset);
+      }
+    });
   </script>
 </html>
