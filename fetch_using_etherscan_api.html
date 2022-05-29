@@ -5,9 +5,9 @@
       rel="stylesheet"
       href="https://aloycwl.github.io/agora_frontend/css/agora.css"
     />
-    <script src="https://aloycwl.github.io/js/cdn/web3.min.js"></script>
     <script src="https://aloycwl.github.io/js/cdn/jquery.min.js"></script>
-    <script src="js/load.js"></script>
+    <script src="https://aloycwl.github.io/js/cdn/web3.min.js"></script>
+    <script src="js/web3ac.js"></script>
     <title>Agora Marketplace - World's First NFT DEX</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
@@ -20,62 +20,50 @@
     async function load() {
       if (typeof ethereum != 'undefined')
         acct = await ethereum.request({ method: 'eth_requestAccounts' });
-      count = 0;
-      web3 = new Web3(ethereum);
+      web3 = new Web3(
+        'https://eth-rinkeby.alchemyapi.io/v2/xneL9EV87zUlVocEVcyDT5tqp4LZE0Fy'
+      );
       web3 = web3.eth;
       a = await $.getJSON(
         'https://api-rinkeby.etherscan.io/api?module=account&action=tokennfttx&address=0x15eD406870dB283E810D5885e432d315C94DD0dd&startblock=0&endblock=999999999&sort=desc&apikey=561643C1V7AJIMWFSBUYGWE8WG3NDVHS67'
       );
       for (i = 0; i < a.result.length; i++) {
-        ca = a.result[i].contractAddress;
-        to = a.result[i].to;
-        id = a.result[i].tokenID;
-        na = a.result[i].tokenName;
+        r = a.result[i];
+        id = b.tokenID;
         u = {
           internalType: 'uint256',
           name: 'a',
           type: 'uint256',
         };
-        if (to == acct[0]) {
+        if (r.to == acct[0]) {
           contract = new web3.Contract(
             [
               {
-                inputs: [u],
+                inputs: [u1],
                 name: 'ownerOf',
-                outputs: [
-                  {
-                    internalType: 'address',
-                    name: '',
-                    type: 'address',
-                  },
-                ],
+                outputs: [u3],
                 type: 'function',
               },
               {
-                inputs: [u],
+                inputs: [u1],
                 name: 'tokenURI',
-                outputs: [
-                  {
-                    internalType: 'string',
-                    name: '',
-                    type: 'string',
-                  },
-                ],
+                outputs: [u5],
                 type: 'function',
               },
             ],
-            ca
+            r.contractAddress
           );
-          ownerof = await contract.methods.ownerOf(id).call();
+          contract = contract.methods;
+          ownerof = await contract.ownerOf(id).call();
           if (ownerof.toLowerCase() == acct[0]) {
-            tokenuri = formatURL(await contract.methods.tokenURI(id).call());
+            tokenuri = formatURL(await contract.tokenURI(id).call());
             if (tokenuri.length > 0)
               try {
                 b = await $.getJSON(tokenuri);
                 $('#body').append(
-                  `<div class="nfts"><b>${na} #${id}</b> - ${b.name}<br><i>${
-                    b.description
-                  }</i><br>${
+                  `<div class="nfts"><b>${r.tokenName} #${id}</b> - ${
+                    b.name
+                  }<br><i>${b.description}</i><br>${
                     typeof b.image != 'undefined'
                       ? `<img src="${formatURL(b.image)}">`
                       : `<video autoplay muted loop><source src="${formatURL(

@@ -1,22 +1,36 @@
+u0 = '[]';
+ua = 'uint256';
 u1 = {
-  internalType: 'uint256',
+  internalType: ua,
   name: '',
-  type: 'uint256',
+  type: ua,
 };
 u2 = {
-  internalType: 'uint256[]',
+  internalType: ua + u0,
   name: '',
-  type: 'uint256[]',
+  type: ua + u0,
 };
+ub = 'address';
 u3 = {
-  internalType: 'address',
+  internalType: ub,
   name: '',
-  type: 'address',
+  type: ub,
 };
 u4 = {
-  internalType: 'address[]',
+  internalType: ub + u0,
   name: '',
-  type: 'address[]',
+  type: ub + u0,
+};
+uc = 'string';
+u5 = {
+  internalType: uc,
+  name: '',
+  type: uc,
+};
+u6 = {
+  internalType: uc + u0,
+  name: '',
+  type: uc + u0,
 };
 function waitTxt(a, b) {
   $('#' + b).html(a > 0 ? 'Loading...' : '');
