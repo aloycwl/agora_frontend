@@ -21,34 +21,6 @@
     CA1 = '0x07b2de1b0d412d567ca4028ab229fd8a671f2491';
     CSS = 'https://aloycwl.github.io/agora_frontend/css/agora.css';
     CHAIN = 4;
-    /*async function load() {
-      if (typeof ethereum != 'undefined')
-        acct = await ethereum.request({ method: 'eth_requestAccounts' });
-      count = 0;
-      web3 = new Web3(ethereum);
-      web3 = web3.eth;
-      if ((await web3.net.getId()) != 4) {
-        await ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0x4' }],
-        });
-        location.reload();
-      }
-      contract = new web3.Contract(
-        [
-          {
-            inputs: [u3, u1, u1],
-            name: 'Sell',
-            outputs: [],
-            stateMutability: 'nonpayable',
-            type: 'function',
-          },
-        ],
-        aa
-      );
-      contract = contract.methods;
-    }*/
-
     async function display(o) {
       await fetch(
         `https://testnets-api.opensea.io/api/v1/assets?owner=${acct}&order_direction=desc&offset=${o}&limit=50`,
@@ -85,12 +57,11 @@
         ],
         addr
       );
-      await contract2.methods.approve(CA1, tokenid).send({
+      a = {
         from: acct,
-      });
-      await contract.Sell(addr, tokenid, $('#t' + id).val()).send({
-        from: acct,
-      });
+      };
+      await contract2.methods.approve(CA1, tokenid).send(a);
+      await contract.Sell(addr, tokenid, $('#t' + id).val()).send(a);
       waitTxt(0, 't' + id);
     }
     (async () => {
