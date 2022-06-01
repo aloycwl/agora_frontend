@@ -26,11 +26,7 @@
           try {
             b = await $.getJSON(formatURL(a[0][i]));
           } catch (e) {
-            b = {
-              name: '',
-              description: '',
-              image: '',
-            };
+            b = { name: '', description: '', image: '' };
           }
           $('#body').append(
             `<div class="nfts"><b>${b.name}</b><br><i>${b.description}</i><br>${
