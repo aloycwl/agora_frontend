@@ -20,7 +20,7 @@
     WB =
       'https://eth-rinkeby.alchemyapi.io/v2/xneL9EV87zUlVocEVcyDT5tqp4LZE0Fy';
     async function display(o) {
-      a = await contracta.Show(20, o).call();
+      a = await contracta.methods.Show(20, o).call();
       for (i = 0; i < a[0].length; i++)
         if (a[0][i].length > 1) {
           try {
@@ -42,7 +42,7 @@
         }
     }
     async function buy(amt, id) {
-      await contract.Buy(id).send({
+      await contract.methods.Buy(id).send({
         from: acct,
         value: amt * 1e18,
       });

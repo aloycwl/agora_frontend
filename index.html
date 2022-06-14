@@ -45,7 +45,7 @@
       CA2 = addr;
       load2();
       await contract2.methods.approve(CA1, tokenid).send(FA);
-      await contract.Sell(CA2, tokenid, t).send(FA);
+      await contract.methods.Sell(CA2, tokenid, t).send(FA);
       waitTxt(0, 'p' + id);
     }
     (async () => {
