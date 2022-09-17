@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <html>
-  <head></head>
-  <body></body>
+  <head>
+    <script src="https://aloycwl.github.io/js/cdn/jquery.min.js"></script>
+    <script src="https://aloycwl.github.io/js/cdn/web3.min.js"></script>
+    <script src="https://aloycwl.github.io/js/cdn/web3ac.js"></script>
+    <title>Agora Marketplace - World's First NFT DEX</title>
+  </head>
+  <body>
+    <a id="body"></a>
+  </body>
   <script>
     offset = 0;
+    CA1 = '0x07b2de1b0d412d567ca4028ab229fd8a671f2491';
+    CS = 'https://aloycwl.github.io/agora_frontend/css/agora.css';
+    CHAIN = 4;
     async function display(o) {
       await fetch(
         'https://api.opensea.io/api/v1/assets?owner=0x15eD406870dB283E810D5885e432d315C94DD0dd&order_direction=desc&limit=50',
@@ -16,21 +26,35 @@
       )
         .then((response) => response.json())
         .then((response) => (a = response.assets));
-      /*for (i = 0; i < a.length; i++)
-      $('#body').append(
-        `<div class="nfts"><b>${a[i].asset_contract.name}</b> -  ${
-          a[i].name
-        }<br><i>${a[i].description}</i> ${
-          a[i].animation_url == null
-            ? `<img src='${a[i].image_url}'>`
-            : `<video autoplay muted loop><source src='${a[i].animation_url}'></video>`
-        }<p id=p${a[i].id}><input id=t${
-          a[i].id
-        } placeholder='Price'><button onclick='sell("${
-          a[i].asset_contract.address
-        }",${a[i].token_id},${a[i].id})'>Sell</button><p></div></div>`
-      );*/
+      for (i = 0; i < a.length; i++)
+        $('#body').append(
+          `<div class="nfts"><b>${a[i].asset_contract.name}</b> -  ${
+            a[i].name
+          }<br><i>${a[i].description}</i> ${
+            a[i].animation_url == null
+              ? `<img src='${a[i].image_url}'>`
+              : `<video autoplay muted loop><source src='${a[i].animation_url}'></video>`
+          }<p id=p${a[i].id}><input id=t${
+            a[i].id
+          } placeholder='Price'><button onclick='sell("${
+            a[i].asset_contract.address
+          }",${a[i].token_id},${a[i].id})'>Sell</button><p></div></div>`
+        );
     }
-    display(offset);
+    (async () => {
+      await load(
+        [
+          {
+            inputs: [u3, u1, u1],
+            name: 'Sell',
+            outputs: [],
+            stateMutability: 'nonpayable',
+            type: 'function',
+          },
+        ],
+        CA1
+      );
+      display(offset);
+    })();
   </script>
 </html>
