@@ -16,10 +16,12 @@
     offset = 0;
     CA1 = '0x07b2de1b0d412d567ca4028ab229fd8a671f2491';
     CS = 'https://aloycwl.github.io/agora_frontend/css/agora.css';
-    CHAIN = 4;
+    CHAIN = 5;
     async function display(o) {
       await fetch(
-        `https://testnets-api.opensea.io/api/v1/assets?owner=${acct}&order_direction=desc&offset=${o}&limit=50`,
+        `https://${
+          CHAIN == 1 ? '' : 'testnets-'
+        }api.opensea.io/api/v1/assets?owner=${acct}&order_direction=desc&offset=${o}&limit=50`,
         {
           method: 'GET',
           headers: {
