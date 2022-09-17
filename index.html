@@ -10,24 +10,25 @@
     <b>Your NFTS</b> |
     <a href="fetch_using_etherscan_api.html">Etherscan API Example</a> |
     <a href="buy.html">Buy Example</a><br />
+    <a href="?id=1">Mainnet</a> | <a href="?id=5">Goerli</a><br />
     <a id="body"></a>
   </body>
   <script>
+    u = new URLSearchParams(window.location.search).get('id');
     offset = 0;
     CA1 = '0x07b2de1b0d412d567ca4028ab229fd8a671f2491';
     CS = 'https://aloycwl.github.io/agora_frontend/css/agora.css';
-    CHAIN = 5;
+    CHAIN = u > 0 ? u : 1;
     async function display(o) {
+      options =
+        CHAIN == 1 ? { 'X-API-KEY': 'ff2304b6277a4e299bcfd285fce397d8' } : {};
       await fetch(
         `https://${
           CHAIN == 1 ? '' : 'testnets-'
         }api.opensea.io/api/v1/assets?owner=${acct}&order_direction=desc&offset=${o}&limit=50`,
         {
           method: 'GET',
-          headers: {
-            accept: 'application/json',
-            'X-API-KEY': 'ff2304b6277a4e299bcfd285fce397d8',
-          },
+          headers: options,
         }
       )
         .then((response) => response.json())
