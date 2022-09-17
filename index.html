@@ -20,7 +20,13 @@
     async function display(o) {
       await fetch(
         `https://testnets-api.opensea.io/api/v1/assets?owner=${acct}&order_direction=desc&offset=${o}&limit=50`,
-        { method: 'GET' }
+        {
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            'X-API-KEY': 'ff2304b6277a4e299bcfd285fce397d8',
+          },
+        }
       )
         .then((response) => response.json())
         .then((response) => (a = response.assets));
